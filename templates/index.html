@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VCT 2026 - Valorant Ajan Öneri Sistemi</title>
+    <style>
+        * { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body {
+            background-color: #0f1923;
+            color: #ece8e1;
+            margin: 0;
+            padding: 30px 15px;
+        }
+        .container {
+            max-width: 820px;
+            margin: 0 auto;
+            background-color: #1b2733;
+            padding: 30px;
+            border-radius: 12px;
+            border-top: 4px solid #ff4655;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+        }
+        h1 {
+            margin-top: 0;
+            text-align: center;
+            color: #ff4655;
+            letter-spacing: 1px;
+        }
+        .subtitle {
+            text-align: center;
+            color: #9aa7b2;
+            margin-bottom: 25px;
+            font-size: 14px;
+        }
+        .section-title {
+            font-size: 15px;
+            font-weight: bold;
+            margin: 20px 0 10px;
+            color: #ece8e1;
+            border-left: 3px solid #ff4655;
+            padding-left: 10px;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 12px;
+        }
+        select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid #304152;
+            background-color: #0f1923;
+            color: #ece8e1;
+            font-size: 14px;
+        }
+        select:focus {
+            outline: none;
+            border-color: #ff4655;
+        }
+        button {
+            width: 100%;
+            margin-top: 25px;
+            padding: 14px;
+            background-color: #ff4655;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        button:hover { background-color: #e03a48; }
+        .error {
+            background-color: rgba(255, 70, 85, 0.15);
+            border: 1px solid #ff4655;
+            color: #ffb3b9;
+            padding: 12px;
+            border-radius: 6px;
+            margin-top: 20px;
+            text-align: center;
+        }
+        .results {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #2c3d4f;
+        }
+        .card {
+            background-color: #0f1923;
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-left: 4px solid #304152;
+        }
+        .card:first-of-type { border-left-color: #ff4655; }
+        .agent-name { font-weight: bold; font-size: 16px; }
+        .rate { color: #5ce1e6; font-weight: bold; font-size: 15px; }
+        .bar-bg {
+            width: 140px;
+            height: 8px;
+            background: #233240;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 0 15px;
+        }
+        .bar-fill {
+            height: 100%;
+            background: #ff4655;
+        }
+        .right-group {
+            display: flex;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>VALORANT AJAN ÖNERİ SİSTEMİ</h1>
+        <p class="subtitle">VCT 2026 Maç Verileriyle Eğitilmiş Yapay Zeka Kompozisyon Asistanı</p>
+
+        <form method="POST">
+            <div class="section-title">Harita Seçimi</div>
+            <select name="harita" required>
+                {% for h in haritalar %}
+                    <option value="{{ h }}" {% if h == secilen_harita %}selected{% endif %}>{{ h }}</option>
+                {% endfor %}
+            </select>
+
+            <div class="section-title">Bizim Takım (İlk 4 Ajan)</div>
+            <div class="grid">
+                {% for i in range(4) %}
+                <select name="bizim_{{ i + 1 }}" required>
+                    <option value="">{{ i + 1 }}. Ajanı Seç</option>
+                    {% for a in ajanlar %}
+                        <option value="{{ a }}" {% if a == bizim_secimler[i] %}selected{% endif %}>{{ a|capitalize }}</option>
+                    {% endfor %}
+                </select>
+                {% endfor %}
+            </div>
+
+            <div class="section-title">Rakip Takım (İsteğe Bağlı / 5 Ajan)</div>
+            <div class="grid">
+                {% for i in range(5) %}
+                <select name="rakip_{{ i + 1 }}">
+                    <option value="">Rakip {{ i + 1 }} (Boş)</option>
+                    {% for a in ajanlar %}
+                        <option value="{{ a }}" {% if a == rakip_secimler[i] %}selected{% endif %}>{{ a|capitalize }}</option>
+                    {% endfor %}
+                </select>
+                {% endfor %}
+            </div>
+
+            <button type="submit">5. AJANI ÖNER</button>
+        </form>
+
+        {% if hata %}
+            <div class="error">{{ hata }}</div>
+        {% endif %}
+
+        {% if oneriler %}
+            <div class="results">
+                <div class="section-title">{{ secilen_harita }} İçin En İyi 5 Ajan Önerisi</div>
+                {% for item in oneriler %}
+                    <div class="card">
+                        <span class="agent-name">{{ loop.index }}. {{ item.ajan }}</span>
+                        <div class="right-group">
+                            <div class="bar-bg">
+                                <div class="bar-fill" data-width="{{ item.oran }}"></div>
+                            </div>
+                            <span class="rate">%{{ "%.2f"|format(item.oran) }}</span>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+    <script>
+        document.querySelectorAll('.bar-fill').forEach(el => {
+            el.style.width = el.dataset.width + '%';
+        });
+    </script>
+</body>
+</html>
