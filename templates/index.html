@@ -3,167 +3,445 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VCT 2026 - Valorant Ajan Öneri Sistemi</title>
+    <title>VCT 2026 // Valorant Ajan Öneri Sistemi</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        * { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        :root {
+            --val-red: #ff4655;
+            --val-cyan: #00e5ff;
+            --val-dark: #0a1017;
+            --val-panel: rgba(18, 28, 39, 0.88);
+            --val-border: rgba(236, 232, 225, 0.12);
+            --val-text: #ece8e1;
+            --val-muted: #8b9bb4;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
         body {
-            background-color: #0b1219;
-            background-image:
-                radial-gradient(circle at 15% 15%, rgba(255, 70, 85, 0.14) 0%, transparent 45%),
-                radial-gradient(circle at 85% 85%, rgba(92, 225, 230, 0.10) 0%, transparent 45%),
-                linear-gradient(135deg, #0b1219 0%, #0f1923 55%, #13202d 100%);
-            background-attachment: fixed;
-            min-height: 100vh;
-            color: #ece8e1;
             margin: 0;
-            padding: 30px 15px;
+            padding: 36px 16px 60px;
+            min-height: 100vh;
+            font-family: 'Inter', sans-serif;
+            color: var(--val-text);
+            background-color: var(--val-dark);
+            background-image:
+                radial-gradient(circle at 12% 10%, rgba(255, 70, 85, 0.22) 0%, transparent 42%),
+                radial-gradient(circle at 88% 85%, rgba(0, 229, 255, 0.14) 0%, transparent 45%),
+                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 100% 100%, 100% 100%, 36px 36px, 36px 36px;
+            background-attachment: fixed;
+            position: relative;
+            overflow-x: hidden;
         }
+
+        /* Arka plan büyük filigran */
+        body::before {
+            content: "VCT // 2026";
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-12deg);
+            font-family: 'Chakra Petch', sans-serif;
+            font-size: clamp(5rem, 16vw, 13rem);
+            font-weight: 700;
+            letter-spacing: 12px;
+            color: rgba(255, 255, 255, 0.025);
+            white-space: nowrap;
+            pointer-events: none;
+            z-index: 0;
+        }
+
         .container {
-            max-width: 820px;
+            position: relative;
+            z-index: 1;
+            max-width: 880px;
             margin: 0 auto;
-            background-color: rgba(27, 39, 51, 0.90);
-            backdrop-filter: blur(10px);
-            padding: 30px;
-            border-radius: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            border-top: 4px solid #ff4655;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55), 0 0 30px rgba(255, 70, 85, 0.08);
+            background: var(--val-panel);
+            backdrop-filter: blur(14px);
+            padding: 34px 32px;
+            border: 1px solid var(--val-border);
+            border-top: 3px solid var(--val-red);
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.65), 0 0 40px rgba(255, 70, 85, 0.10);
+            clip-path: polygon(0 0, 100% 0, 100% calc(100% - 22px), calc(100% - 22px) 100%, 0 100%);
         }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 22px;
+            border-bottom: 1px solid var(--val-border);
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 5px 14px;
+            margin-bottom: 12px;
+            font-family: 'Chakra Petch', sans-serif;
+            font-size: 12px;
+            letter-spacing: 2px;
+            color: var(--val-cyan);
+            background: rgba(0, 229, 255, 0.08);
+            border: 1px solid rgba(0, 229, 255, 0.30);
+            text-transform: uppercase;
+        }
+
+        .badge-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--val-cyan);
+            box-shadow: 0 0 8px var(--val-cyan);
+            animation: pulse 1.8s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.4; transform: scale(0.8); }
+        }
+
         h1 {
-            margin-top: 0;
-            text-align: center;
-            color: #ff4655;
-            letter-spacing: 1px;
+            margin: 0;
+            font-family: 'Chakra Petch', sans-serif;
+            font-size: clamp(1.7rem, 4vw, 2.35rem);
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            color: var(--val-text);
         }
+
+        h1 span {
+            color: var(--val-red);
+        }
+
         .subtitle {
-            text-align: center;
-            color: #9aa7b2;
-            margin-bottom: 25px;
+            margin: 8px 0 0;
+            color: var(--val-muted);
             font-size: 14px;
         }
-        .section-title {
-            font-size: 15px;
-            font-weight: bold;
-            margin: 20px 0 10px;
-            color: #ece8e1;
-            border-left: 3px solid #ff4655;
-            padding-left: 10px;
+
+        .panel-block {
+            background: rgba(10, 16, 23, 0.55);
+            border: 1px solid var(--val-border);
+            padding: 18px 20px;
+            margin-bottom: 18px;
         }
+
+        .panel-block.ally {
+            border-left: 3px solid var(--val-cyan);
+        }
+
+        .panel-block.enemy {
+            border-left: 3px solid var(--val-red);
+        }
+
+        .panel-block.map-block {
+            border-left: 3px solid #ece8e1;
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-family: 'Chakra Petch', sans-serif;
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin: 0 0 12px;
+        }
+
+        .section-title small {
+            font-family: 'Inter', sans-serif;
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--val-muted);
+            letter-spacing: 0.5px;
+            text-transform: none;
+        }
+
+        .ally .section-title { color: var(--val-cyan); }
+        .enemy .section-title { color: var(--val-red); }
+
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-            gap: 12px;
+            grid-template-columns: repeat(auto-fit, minmax(145px, 1fr));
+            gap: 10px;
         }
+
         select {
             width: 100%;
-            padding: 10px;
-            border-radius: 6px;
-            border: 1px solid #304152;
-            background-color: #0f1923;
-            color: #ece8e1;
+            padding: 11px 12px;
+            background-color: #0d1620;
+            color: var(--val-text);
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            font-family: 'Inter', sans-serif;
             font-size: 14px;
+            transition: border-color 0.2s, box-shadow 0.2s, background-color 0.2s;
+            cursor: pointer;
         }
+
+        select:hover {
+            border-color: rgba(255, 255, 255, 0.35);
+            background-color: #13202e;
+        }
+
         select:focus {
             outline: none;
-            border-color: #ff4655;
+            border-color: var(--val-red);
+            box-shadow: 0 0 0 2px rgba(255, 70, 85, 0.20);
         }
+
+        .ally select:focus {
+            border-color: var(--val-cyan);
+            box-shadow: 0 0 0 2px rgba(0, 229, 255, 0.18);
+        }
+
         button {
             width: 100%;
-            margin-top: 25px;
-            padding: 14px;
-            background-color: #ff4655;
-            color: white;
+            margin-top: 10px;
+            padding: 16px;
+            background: linear-gradient(90deg, #ff4655 0%, #e63946 100%);
+            color: #ffffff;
             border: none;
-            border-radius: 6px;
-            font-size: 16px;
-            font-weight: bold;
+            font-family: 'Chakra Petch', sans-serif;
+            font-size: 17px;
+            font-weight: 700;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
             cursor: pointer;
-            transition: background 0.2s;
+            clip-path: polygon(12px 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%, 0 12px);
+            transition: transform 0.15s, box-shadow 0.2s, filter 0.2s;
         }
-        button:hover { background-color: #e03a48; }
+
+        button:hover {
+            filter: brightness(1.08);
+            box-shadow: 0 0 24px rgba(255, 70, 85, 0.45);
+            transform: translateY(-1px);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
         .error {
-            background-color: rgba(255, 70, 85, 0.15);
-            border: 1px solid #ff4655;
-            color: #ffb3b9;
-            padding: 12px;
-            border-radius: 6px;
+            background: rgba(255, 70, 85, 0.14);
+            border: 1px solid var(--val-red);
+            color: #ffc2c7;
+            padding: 13px 16px;
             margin-top: 20px;
             text-align: center;
+            font-size: 14px;
         }
+
         .results {
             margin-top: 30px;
-            padding-top: 20px;
-            border-top: 1px solid #2c3d4f;
+            padding-top: 24px;
+            border-top: 1px solid var(--val-border);
+            animation: fadeIn 0.35s ease;
         }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .results-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .results-title {
+            font-family: 'Chakra Petch', sans-serif;
+            font-size: 16px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--val-text);
+        }
+
+        .results-title span {
+            color: var(--val-red);
+        }
+
         .card {
-            background-color: #0f1923;
-            padding: 12px 16px;
-            border-radius: 8px;
+            background: rgba(10, 16, 23, 0.80);
+            border: 1px solid var(--val-border);
+            border-left: 4px solid #384c61;
+            padding: 14px 18px;
             margin-bottom: 10px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            border-left: 4px solid #304152;
+            gap: 12px;
+            transition: transform 0.15s, border-color 0.2s;
         }
-        .card:first-of-type { border-left-color: #ff4655; }
-        .agent-name { font-weight: bold; font-size: 16px; }
-        .rate { color: #5ce1e6; font-weight: bold; font-size: 15px; }
-        .bar-bg {
-            width: 140px;
-            height: 8px;
-            background: #233240;
-            border-radius: 4px;
-            overflow: hidden;
-            margin: 0 15px;
+
+        .card:hover {
+            transform: translateX(4px);
+            border-color: rgba(255, 255, 255, 0.25);
         }
-        .bar-fill {
-            height: 100%;
-            background: #ff4655;
+
+        .card.top-pick {
+            background: linear-gradient(90deg, rgba(255, 70, 85, 0.16) 0%, rgba(10, 16, 23, 0.90) 60%);
+            border: 1px solid rgba(255, 70, 85, 0.45);
+            border-left: 4px solid var(--val-red);
+            box-shadow: 0 0 22px rgba(255, 70, 85, 0.14);
         }
+
+        .left-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .rank-num {
+            width: 30px;
+            height: 30px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Chakra Petch', sans-serif;
+            font-weight: 700;
+            font-size: 15px;
+            background: rgba(255, 255, 255, 0.06);
+            color: var(--val-muted);
+        }
+
+        .top-pick .rank-num {
+            background: var(--val-red);
+            color: #ffffff;
+        }
+
+        .agent-name {
+            font-family: 'Chakra Petch', sans-serif;
+            font-weight: 700;
+            font-size: 18px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .top-tag {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            padding: 3px 8px;
+            background: rgba(255, 70, 85, 0.22);
+            color: #ff8c95;
+            border: 1px solid rgba(255, 70, 85, 0.5);
+            text-transform: uppercase;
+        }
+
         .right-group {
             display: flex;
             align-items: center;
+            gap: 14px;
+        }
+
+        .bar-bg {
+            width: 150px;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.08);
+            overflow: hidden;
+        }
+
+        .bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--val-red), var(--val-cyan));
+            width: 0;
+            transition: width 0.6s ease;
+        }
+
+        .rate {
+            min-width: 64px;
+            text-align: right;
+            font-family: 'Chakra Petch', sans-serif;
+            color: var(--val-cyan);
+            font-weight: 700;
+            font-size: 17px;
+        }
+
+        .footer-note {
+            margin-top: 26px;
+            text-align: center;
+            font-size: 12px;
+            color: var(--val-muted);
+            letter-spacing: 0.5px;
+        }
+
+        @media (max-width: 600px) {
+            .container { padding: 22px 16px; }
+            .bar-bg { width: 80px; }
+            .top-tag { display: none; }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>VALORANT AJAN ÖNERİ SİSTEMİ</h1>
-        <p class="subtitle">VCT 2026 Maç Verileriyle Eğitilmiş Yapay Zeka Kompozisyon Asistanı</p>
+        <div class="header">
+            <div class="badge">
+                <span class="badge-dot"></span>
+                VCT 2026 // AI COMP ENGINE
+            </div>
+            <h1>VALORANT <span>AJAN ÖNERİ</span> SİSTEMİ</h1>
+            <p class="subtitle">Random Forest Destekli Profesyonel Kompozisyon ve Kazanma Olasılığı Asistanı</p>
+        </div>
 
         <form method="POST">
-            <div class="section-title">Harita Seçimi</div>
-            <select name="harita" required>
-                {% for h in haritalar %}
-                    <option value="{{ h }}" {% if h == secilen_harita %}selected{% endif %}>{{ h }}</option>
-                {% endfor %}
-            </select>
-
-            <div class="section-title">Bizim Takım (İlk 4 Ajan)</div>
-            <div class="grid">
-                {% for i in range(4) %}
-                <select name="bizim_{{ i + 1 }}" required>
-                    <option value="">{{ i + 1 }}. Ajanı Seç</option>
-                    {% for a in ajanlar %}
-                        <option value="{{ a }}" {% if a == bizim_secimler[i] %}selected{% endif %}>{{ a|capitalize }}</option>
+            <div class="panel-block map-block">
+                <div class="section-title">
+                    <span>01 // Harita Seçimi</span>
+                    <small>Aktif VCT Havuzu</small>
+                </div>
+                <select name="harita" required>
+                    {% for h in haritalar %}
+                        <option value="{{ h }}" {% if h == secilen_harita %}selected{% endif %}>{{ h }}</option>
                     {% endfor %}
                 </select>
-                {% endfor %}
             </div>
 
-            <div class="section-title">Rakip Takım (İsteğe Bağlı / 5 Ajan)</div>
-            <div class="grid">
-                {% for i in range(5) %}
-                <select name="rakip_{{ i + 1 }}">
-                    <option value="">Rakip {{ i + 1 }} (Boş)</option>
-                    {% for a in ajanlar %}
-                        <option value="{{ a }}" {% if a == rakip_secimler[i] %}selected{% endif %}>{{ a|capitalize }}</option>
+            <div class="panel-block ally">
+                <div class="section-title">
+                    <span>02 // Bizim Takım</span>
+                    <small>Zorunlu • İlk 4 Ajan</small>
+                </div>
+                <div class="grid">
+                    {% for i in range(4) %}
+                    <select name="bizim_{{ i + 1 }}" required>
+                        <option value="">{{ i + 1 }}. Ajanı Seç</option>
+                        {% for a in ajanlar %}
+                            <option value="{{ a }}" {% if a == bizim_secimler[i] %}selected{% endif %}>{{ a|capitalize }}</option>
+                        {% endfor %}
+                    </select>
                     {% endfor %}
-                </select>
-                {% endfor %}
+                </div>
             </div>
 
-            <button type="submit">5. AJANI ÖNER</button>
+            <div class="panel-block enemy">
+                <div class="section-title">
+                    <span>03 // Rakip Takım</span>
+                    <small>İsteğe Bağlı • 5 Ajan</small>
+                </div>
+                <div class="grid">
+                    {% for i in range(5) %}
+                    <select name="rakip_{{ i + 1 }}">
+                        <option value="">Rakip {{ i + 1 }} (Boş)</option>
+                        {% for a in ajanlar %}
+                            <option value="{{ a }}" {% if a == rakip_secimler[i] %}selected{% endif %}>{{ a|capitalize }}</option>
+                        {% endfor %}
+                    </select>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <button type="submit">5. AJANI ANALİZ ET VE ÖNER</button>
         </form>
 
         {% if hata %}
@@ -172,10 +450,18 @@
 
         {% if oneriler %}
             <div class="results">
-                <div class="section-title">{{ secilen_harita }} İçin En İyi 5 Ajan Önerisi</div>
+                <div class="results-header">
+                    <div class="results-title"><span>{{ secilen_harita }}</span> // EN İYİ 5 AJAN ÖNERİSİ</div>
+                </div>
                 {% for item in oneriler %}
-                    <div class="card">
-                        <span class="agent-name">{{ loop.index }}. {{ item.ajan }}</span>
+                    <div class="card {% if loop.first %}top-pick{% endif %}">
+                        <div class="left-group">
+                            <span class="rank-num">#{{ loop.index }}</span>
+                            <span class="agent-name">{{ item.ajan }}</span>
+                            {% if loop.first %}
+                                <span class="top-tag">En İyi Seçim</span>
+                            {% endif %}
+                        </div>
                         <div class="right-group">
                             <div class="bar-bg">
                                 <div class="bar-fill" data-width="{{ item.oran }}"></div>
@@ -186,10 +472,17 @@
                 {% endfor %}
             </div>
         {% endif %}
+
+        <div class="footer-note">
+            VCT 2026 Maç Veri Seti (886 Maç) • Scikit-Learn &amp; Flask
+        </div>
     </div>
+
     <script>
-        document.querySelectorAll('.bar-fill').forEach(el => {
-            el.style.width = el.dataset.width + '%';
+        requestAnimationFrame(() => {
+            document.querySelectorAll('.bar-fill').forEach(el => {
+                el.style.width = el.dataset.width + '%';
+            });
         });
     </script>
 </body>
